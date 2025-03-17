@@ -3,6 +3,7 @@ import 'package:fitness_app/joinclub.dart';
 import 'package:fitness_app/stories.dart';
 import 'package:fitness_app/tutorials.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class Home extends StatelessWidget {
   const Home({super.key});
@@ -202,6 +203,7 @@ class Home extends StatelessWidget {
               VideoTutorialsOfTheWeek(),
               const SizedBox(height: 20),
               UserSuccessStories(),
+              _buildSocialMediaFooter(),
             ],
           ),
         ],
@@ -209,6 +211,8 @@ class Home extends StatelessWidget {
     );
   }
 }
+
+
 
 Widget _buildGymTipCard(
   BuildContext context,
@@ -246,6 +250,44 @@ Widget _buildGymTipCard(
   );
 }
 
+// Social media footer
+  Widget _buildSocialMediaFooter() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        IconButton(
+          icon: const FaIcon(FontAwesomeIcons.facebook, size: 30, color: Color.fromARGB(255, 1, 71, 128)),
+          onPressed: () {
+            log('Facebook clicked');
+            // Add your Facebook link here
+          },
+        ),
+        IconButton(
+          icon: const FaIcon(FontAwesomeIcons.twitter, size: 30, color: Colors.blue),
+          onPressed: () {
+            log('Twitter clicked');
+            // Add your Twitter link here
+          },
+        ),
+        IconButton(
+          icon: const FaIcon(FontAwesomeIcons.instagram, size: 30, color: Colors.purple),
+          onPressed: () {
+            log('Instagram clicked');
+            // Add your Instagram link here
+          },
+        ),
+        IconButton(
+          icon: const FaIcon(FontAwesomeIcons.youtube, size: 30, color: Colors.red),
+          onPressed: () {
+            log('YouTube clicked');
+            // Add your YouTube link here
+          },
+        ),
+      ],
+    );
+}
+
+
 void _showTipModal(
   BuildContext context,
   String title,
@@ -274,3 +316,5 @@ void _showTipModal(
         ),
   );
 }
+
+
