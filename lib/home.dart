@@ -1,4 +1,6 @@
 import 'dart:developer';
+import 'package:fitness_app/joinclub.dart';
+import 'package:fitness_app/tutorials.dart';
 import 'package:flutter/material.dart';
 
 class Home extends StatelessWidget {
@@ -8,7 +10,7 @@ class Home extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.transparent, // Transparent AppBar
+        backgroundColor: Colors.transparent,
         elevation: 0,
         leading: Builder(
           builder:
@@ -62,7 +64,6 @@ class Home extends StatelessWidget {
       ),
       body: Stack(
         children: [
-          // Background Image with Gradient Overlay
           Positioned.fill(
             child: ShaderMask(
               shaderCallback: (Rect bounds) {
@@ -74,78 +75,61 @@ class Home extends StatelessWidget {
               },
               blendMode: BlendMode.dstIn,
               child: Image.network(
-                'https://www.ideafit.com/wp-content/uploads/2022/04/Run-Pacing.jpg',
-                fit: BoxFit.cover, // Ensures the image covers the entire screen
+                'https://img.freepik.com/premium-photo/man-running-black-background_980736-8479.jpg',
+                fit: BoxFit.cover,
               ),
             ),
           ),
-          // Foreground Content
           ListView(
             padding: const EdgeInsets.all(15),
             children: [
-              // Fitness App Title Container
-              Container(
-                padding: const EdgeInsets.all(20),
-                decoration: BoxDecoration(
-                  color: const Color.fromARGB(
-                    255,
-                    158,
-                    155,
-                    155,
-                  ).withAlpha(80), // Semi-transparent background
-                  borderRadius: BorderRadius.circular(5),
-                ),
-                child: const Text(
-                  'Fitness App',
-                  style: TextStyle(
-                    fontSize: 22,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-              ),
-
-              const SizedBox(height: 20), // Space before carousel
-              // Horizontally Scrollable Gym Tips Carousel
+              const SizedBox(height: 20),
               SizedBox(
-                height: 160, // Fixed height for the cards
+                height: 80,
                 child: SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
                   child: Row(
                     children: [
                       _buildGymTipCard(
+                        context,
                         "Stay Hydrated",
                         "Drink at least 2L of water daily.",
+                        'https://media.istockphoto.com/id/1372307016/photo/shot-of-a-young-woman-taking-a-break-from-working-out-to-drink-water.jpg?s=612x612&w=0&k=20&c=cdWNquuOodtnRBrJ7x1_sHlD9gnMrIKCEU2SIaKbAnQ=',
                       ),
                       _buildGymTipCard(
+                        context,
                         "Warm-Up",
                         "Always warm up before lifting weights.",
+                        'https://cdn.outsideonline.com/wp-content/uploads/2020/03/26/no-warm-up_s.jpg',
                       ),
                       _buildGymTipCard(
+                        context,
                         "Proper Form",
                         "Focus on form over heavy weights.",
+                        'https://recxpress.com.au/wp-content/uploads/2019/05/The-Importance-of-Good-Weightlifting-Form-and-How-to-Improve-Your-Technique.jpg',
                       ),
                       _buildGymTipCard(
+                        context,
                         "Rest & Recovery",
                         "Muscles grow when you rest, not just when you train.",
+                        'https://tropeaka.com/cdn/shop/articles/7-reasons-to-take-rest-and-recovery-more-seriously-main_2000x.jpg?v=1572852067',
                       ),
                       _buildGymTipCard(
+                        context,
                         "Consistency",
                         "Results come from discipline, not motivation.",
+                        'https://www.planetfitness.com/sites/default/files/feature-image/SEO%20Blog%20Article_Header%20Image_Building%20Consistency_%20Tips%20for%20Maintaining%20Motivation%20in%20Your%20Gym%20Routine.jpg',
                       ),
                     ],
                   ),
                 ),
               ),
-
-              const SizedBox(height: 20), // Space before the motivational card
-              // Motivational Card with Image and Button
+              const SizedBox(height: 10),
               Container(
                 margin: const EdgeInsets.only(top: 20),
                 padding: const EdgeInsets.all(15),
                 decoration: BoxDecoration(
-                  color: Colors.white.withAlpha(230),
+                  color: Colors.white.withAlpha(150),
                   borderRadius: BorderRadius.circular(10),
                   boxShadow: [
                     BoxShadow(
@@ -158,36 +142,29 @@ class Home extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // Image
                     ClipRRect(
                       borderRadius: BorderRadius.circular(10),
                       child: Image.network(
-                        'https://wod.guru/wp-content/uploads/2024/07/7-2.jpg', // Replace with your image URL
+                        'https://wod.guru/wp-content/uploads/2024/07/7-2.jpg',
                         height: 150,
                         width: double.infinity,
                         fit: BoxFit.cover,
                       ),
                     ),
-
                     const SizedBox(height: 15),
-
-                    // Encouraging text
                     const Text(
-                      'Start Your Fitness Journey Today!',
+                      'Take the first step toward a healthier, stronger, and more confident you—start your fitness journey today!',
                       style: TextStyle(
-                        fontSize: 20,
+                        fontSize: 15,
                         fontWeight: FontWeight.bold,
                         color: Colors.black,
+                        fontStyle: FontStyle.italic,
                       ),
                     ),
-
-                    const SizedBox(height: 5),
-
-                    // Button
+                    const SizedBox(height: 25),
                     Center(
                       child: ElevatedButton(
                         onPressed: () {
-                          // Handle registration action here
                           log('Start your journey button clicked');
                         },
                         style: ElevatedButton.styleFrom(
@@ -195,7 +172,6 @@ class Home extends StatelessWidget {
                             horizontal: 40,
                             vertical: 15,
                           ),
-                          //primary: Colors.blueAccent,
                           textStyle: const TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
@@ -207,6 +183,22 @@ class Home extends StatelessWidget {
                   ],
                 ),
               ),
+              const SizedBox(height: 20),
+              Center(
+                child: const Text(
+                  'Join one of exclusive clubs!',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 20,
+                    color: Colors.white,
+                    fontStyle: FontStyle.italic,
+                  ),
+                ),
+              ),
+              const SizedBox(height: 20),
+              JoinAClubSection(),
+              const SizedBox(height: 20),
+              VideoTutorialsOfTheWeek(),
             ],
           ),
         ],
@@ -215,38 +207,67 @@ class Home extends StatelessWidget {
   }
 }
 
-// Function to build each Gym Tip Card
-Widget _buildGymTipCard(String title, String description) {
-  return Container(
-    width: 200, // Fixed width for each card
-    margin: const EdgeInsets.only(right: 10), // Space between cards
-    padding: const EdgeInsets.all(15),
-    decoration: BoxDecoration(
-      color: Colors.white.withAlpha(
-        220,
-      ), // Slightly transparent white background
-      borderRadius: BorderRadius.circular(10),
-      boxShadow: [
-        BoxShadow(
-          color: Colors.black.withAlpha(0),
-          blurRadius: 5,
-          spreadRadius: 2,
-        ),
-      ],
-    ),
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
+Widget _buildGymTipCard(
+  BuildContext context,
+  String title,
+  String description,
+  String imageUrl,
+) {
+  return GestureDetector(
+    onTap: () => _showTipModal(context, title, description, imageUrl),
+    child: AnimatedContainer(
+      duration: const Duration(milliseconds: 300),
+      curve: Curves.easeInOut,
+      width: 200,
+      margin: const EdgeInsets.only(right: 10),
+      padding: const EdgeInsets.all(15),
+      decoration: BoxDecoration(
+        color: const Color.fromARGB(255, 248, 247, 247).withAlpha(100),
+        borderRadius: BorderRadius.circular(10),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withAlpha(0),
+            blurRadius: 8,
+            spreadRadius: 2,
+          ),
+        ],
+      ),
+      child: Center(
+        child: Text(
           title,
+          textAlign: TextAlign.center,
           style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
         ),
-        const SizedBox(height: 5),
-        Text(
-          description,
-          style: const TextStyle(fontSize: 14, color: Colors.black54),
-        ),
-      ],
+      ),
     ),
+  );
+}
+
+void _showTipModal(
+  BuildContext context,
+  String title,
+  String description,
+  String imageUrl,
+) {
+  showDialog(
+    context: context,
+    builder:
+        (context) => AlertDialog(
+          title: Text(title),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Image.network(imageUrl),
+              SizedBox(height: 10),
+              Text(description),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: Text('Close'),
+            ),
+          ],
+        ),
   );
 }
