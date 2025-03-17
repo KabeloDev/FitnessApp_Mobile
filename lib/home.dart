@@ -31,19 +31,24 @@ class Home extends StatelessWidget {
         ],
       ),
       drawer: Drawer(
-        child: ListView(
-          padding: EdgeInsets.zero,
+        child: Column(
           children: [
+            // Drawer Header
             DrawerHeader(
               decoration: const BoxDecoration(
-                color: Color.fromARGB(255, 89, 90, 90),
+                color: Color.fromARGB(
+                  255,
+                  89,
+                  90,
+                  90,
+                ), // Customize the header color
               ),
               child: Row(
                 children: [
                   CircleAvatar(
                     radius: 30,
                     backgroundImage: NetworkImage(
-                      'https://i.pinimg.com/736x/dc/9c/61/dc9c614e3007080a5aff36aebb949474.jpg',
+                      'https://i.pinimg.com/736x/dc/9c/61/dc9c614e3007080a5aff36aebb949474.jpg', // Profile image
                     ),
                     backgroundColor: Colors.white,
                   ),
@@ -51,19 +56,74 @@ class Home extends StatelessWidget {
                 ],
               ),
             ),
-            ListTile(
-              leading: const Icon(Icons.home),
-              title: const Text('Home'),
-              onTap: () {},
-            ),
-            ListTile(
-              leading: const Icon(Icons.settings),
-              title: const Text('Settings'),
-              onTap: () {},
+            // Body with background image
+            Expanded(
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(60),
+                  image: DecorationImage(
+                    image: NetworkImage(
+                      'https://static.vecteezy.com/system/resources/previews/029/273/596/non_2x/sporty-woman-runner-in-silhouette-on-white-background-free-photo.jpg', // Background image
+                    ),
+                    fit:
+                        BoxFit
+                            .cover, // Ensure the image covers the entire container
+                  ),
+                ),
+                child: ListView(
+                  padding: EdgeInsets.only(top: 56),
+                  children: [
+                    ListTile(
+                      leading: IconButton(
+                        icon: const Icon(Icons.person),
+                        onPressed: () {
+                          // Add action here
+                        },
+                      ),
+                      title: const Text('User Profile'),
+                      onTap: () {},
+                    ),
+                    const SizedBox(height: 30,),
+                    ListTile(
+                      leading: IconButton(
+                        icon: const Icon(Icons.photo_library_rounded),
+                        onPressed: () {
+                          // Add action here
+                        },
+                      ),
+                      title: const Text('Exercise Library'),
+                      onTap: () {},
+                    ),
+                    const SizedBox(height: 30,),
+                    ListTile(
+                      leading: IconButton(
+                        icon: const Icon(Icons.calendar_month),
+                        onPressed: () {
+                          // Add action here
+                        },
+                      ),
+                      title: const Text('Workout Planner'),
+                      onTap: () {},
+                    ),
+                    const SizedBox(height: 30,),
+                    ListTile(
+                      leading: IconButton(
+                        icon: const Icon(Icons.dashboard),
+                        onPressed: () {
+                          // Add action here
+                        },
+                      ),
+                      title: const Text('Dashboard'),
+                      onTap: () {},
+                    ),
+                  ],
+                ),
+              ),
             ),
           ],
         ),
       ),
+
       body: Stack(
         children: [
           Positioned.fill(
@@ -212,8 +272,6 @@ class Home extends StatelessWidget {
   }
 }
 
-
-
 Widget _buildGymTipCard(
   BuildContext context,
   String title,
@@ -251,42 +309,57 @@ Widget _buildGymTipCard(
 }
 
 // Social media footer
-  Widget _buildSocialMediaFooter() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        IconButton(
-          icon: const FaIcon(FontAwesomeIcons.facebook, size: 30, color: Color.fromARGB(255, 1, 71, 128)),
-          onPressed: () {
-            log('Facebook clicked');
-            // Add your Facebook link here
-          },
+Widget _buildSocialMediaFooter() {
+  return Row(
+    mainAxisAlignment: MainAxisAlignment.center,
+    children: [
+      IconButton(
+        icon: const FaIcon(
+          FontAwesomeIcons.facebook,
+          size: 30,
+          color: Color.fromARGB(255, 1, 71, 128),
         ),
-        IconButton(
-          icon: const FaIcon(FontAwesomeIcons.twitter, size: 30, color: Colors.blue),
-          onPressed: () {
-            log('Twitter clicked');
-            // Add your Twitter link here
-          },
+        onPressed: () {
+          log('Facebook clicked');
+          // Add your Facebook link here
+        },
+      ),
+      IconButton(
+        icon: const FaIcon(
+          FontAwesomeIcons.twitter,
+          size: 30,
+          color: Colors.blue,
         ),
-        IconButton(
-          icon: const FaIcon(FontAwesomeIcons.instagram, size: 30, color: Colors.purple),
-          onPressed: () {
-            log('Instagram clicked');
-            // Add your Instagram link here
-          },
+        onPressed: () {
+          log('Twitter clicked');
+          // Add your Twitter link here
+        },
+      ),
+      IconButton(
+        icon: const FaIcon(
+          FontAwesomeIcons.instagram,
+          size: 30,
+          color: Colors.purple,
         ),
-        IconButton(
-          icon: const FaIcon(FontAwesomeIcons.youtube, size: 30, color: Colors.red),
-          onPressed: () {
-            log('YouTube clicked');
-            // Add your YouTube link here
-          },
+        onPressed: () {
+          log('Instagram clicked');
+          // Add your Instagram link here
+        },
+      ),
+      IconButton(
+        icon: const FaIcon(
+          FontAwesomeIcons.youtube,
+          size: 30,
+          color: Colors.red,
         ),
-      ],
-    );
+        onPressed: () {
+          log('YouTube clicked');
+          // Add your YouTube link here
+        },
+      ),
+    ],
+  );
 }
-
 
 void _showTipModal(
   BuildContext context,
@@ -316,5 +389,3 @@ void _showTipModal(
         ),
   );
 }
-
-
