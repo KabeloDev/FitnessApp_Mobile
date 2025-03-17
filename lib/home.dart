@@ -1,5 +1,6 @@
 import 'dart:developer';
 import 'package:fitness_app/joinclub.dart';
+import 'package:fitness_app/stories.dart';
 import 'package:fitness_app/tutorials.dart';
 import 'package:flutter/material.dart';
 
@@ -199,6 +200,8 @@ class Home extends StatelessWidget {
               JoinAClubSection(),
               const SizedBox(height: 20),
               VideoTutorialsOfTheWeek(),
+              const SizedBox(height: 20),
+              UserSuccessStories(),
             ],
           ),
         ],
