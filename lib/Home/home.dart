@@ -1,14 +1,24 @@
 import 'dart:developer';
+import 'package:fitness_app/Dashboard/dashboard.dart';
 import 'package:fitness_app/Home/joinclub.dart';
 import 'package:fitness_app/Home/stories.dart';
 import 'package:fitness_app/Home/tutorials.dart';
 import 'package:fitness_app/Login/login.dart';
+import 'package:fitness_app/Profile/profile.dart';
 import 'package:fitness_app/Register/register.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Home extends StatelessWidget {
   const Home({super.key});
+
+  // Function to check if the user is already signed in
+  Future<bool> _isUserSignedIn() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? jwtToken = prefs.getString('jwt_token');  // Retrieve the JWT token
+    return jwtToken != null;  // If a token exists, the user is signed in
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -26,12 +36,22 @@ class Home extends StatelessWidget {
         actions: [
           IconButton(
             icon: const Icon(Icons.login_rounded, color: Colors.black),
-            onPressed: () {
-              log('login button clicked');
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => LoginPage()),
-              );
+             onPressed: () async {
+              // Check if the user is already signed in
+              bool isSignedIn = await _isUserSignedIn();
+              if (isSignedIn) {
+                // Show a snackbar if already signed in
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text('Already signed in')),
+                );
+              } else {
+                // If not signed in, navigate to the login page
+                log('login button clicked');
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => LoginPage()),
+                );
+              }
             },
           ),
         ],
@@ -87,7 +107,14 @@ class Home extends StatelessWidget {
                         },
                       ),
                       title: const Text('User Profile'),
-                      onTap: () {},
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ProfilePage(),
+                          ),
+                        );
+                      },
                     ),
                     const SizedBox(height: 30),
                     ListTile(
@@ -120,7 +147,14 @@ class Home extends StatelessWidget {
                         },
                       ),
                       title: const Text('Dashboard'),
-                      onTap: () {},
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => DashboardPage(),
+                          ),
+                        );
+                      },
                     ),
                   ],
                 ),

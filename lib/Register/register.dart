@@ -1,8 +1,9 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:fitness_app/Login/login.dart';
 import 'package:flutter/material.dart';
 import 'package:http/io_client.dart';
-//import 'package:http/http.dart' as http;  
+//import 'package:http/http.dart' as http;
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
@@ -18,12 +19,15 @@ class RegisterPageState extends State<RegisterPage> {
 
   // Function to make API call
   Future<void> registerUser() async {
-    final String apiUrl = 'https://10.0.2.2:7182/api/users/register'; // Correct URL with '/api/register' for Android Emulator
+    final String apiUrl =
+        'https://10.0.2.2:7182/api/users/register'; // Correct URL with '/api/register' for Android Emulator
 
     // Create a custom HttpClient to bypass SSL certificate verification
-    final HttpClient client = HttpClient()
-      ..badCertificateCallback =
-          (X509Certificate cert, String host, int port) => true; // Bypass SSL
+    final HttpClient client =
+        HttpClient()
+          ..badCertificateCallback =
+              (X509Certificate cert, String host, int port) =>
+                  true; // Bypass SSL
 
     // Create an IOClient using the custom HttpClient
     final IOClient ioClient = IOClient(client);
@@ -42,19 +46,27 @@ class RegisterPageState extends State<RegisterPage> {
       if (response.statusCode == 200) {
         // Registration successful
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Registration Successful!')),
+          SnackBar(
+            content: Text(
+              'Registration Successful! You may proceed to sign in.',
+            ),
+          ),
+        );
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => LoginPage()),
         );
       } else {
         // Registration failed
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Registration Failed!')),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text('Registration Failed!')));
       }
     } catch (e) {
       // Handle network or other errors
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error: $e')),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('Error: $e')));
     } finally {
       // Close the IOClient to free resources
       ioClient.close();
@@ -86,10 +98,7 @@ class RegisterPageState extends State<RegisterPage> {
               obscureText: true,
             ),
             SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: registerUser,
-              child: Text('Register'),
-            ),
+            ElevatedButton(onPressed: registerUser, child: Text('Register')),
           ],
         ),
       ),

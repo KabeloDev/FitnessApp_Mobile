@@ -1,8 +1,10 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:fitness_app/Dashboard/dashboard.dart';
+import 'package:fitness_app/Home/home.dart';
 import 'package:flutter/material.dart';
 import 'package:http/io_client.dart';
-//import 'package:http/http.dart' as http;  
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -17,7 +19,7 @@ class LoginPageState extends State<LoginPage> {
 
   // Function to make API call
   Future<void> loginUser() async {
-    final String apiUrl = 'https://10.0.2.2:7182/api/users/login'; // Correct URL with '/api/register' for Android Emulator
+    final String apiUrl = 'https://10.0.2.2:7182/api/users/login'; // Correct URL with '/api/login' for Android Emulator
 
     // Create a custom HttpClient to bypass SSL certificate verification
     final HttpClient client = HttpClient()
@@ -38,9 +40,21 @@ class LoginPageState extends State<LoginPage> {
       );
 
       if (response.statusCode == 200) {
-        // Registration successful
+        // Assuming the response contains the JWT token
+        final Map<String, dynamic> data = json.decode(response.body);
+        final String jwtToken = data['token'];  // JWT token returned by backend
+
+        // Store the JWT token locally using shared_preferences
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        await prefs.setString('jwt_token', jwtToken);
+
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Sign in Successful!')),
+        );
+
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => Home()),
         );
       } else {
         // Registration failed
@@ -81,7 +95,7 @@ class LoginPageState extends State<LoginPage> {
             SizedBox(height: 20),
             ElevatedButton(
               onPressed: loginUser,
-              child: Text('Register'),
+              child: Text('Login'),
             ),
           ],
         ),
