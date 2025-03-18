@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 
 class UserSuccessStories extends StatefulWidget {
-  UserSuccessStories({super.key});
+  const UserSuccessStories({super.key});
 
   @override
-  _UserSuccessStoriesState createState() => _UserSuccessStoriesState();
+  UserSuccessStoriesState createState() => UserSuccessStoriesState();
 }
 
-class _UserSuccessStoriesState extends State<UserSuccessStories> {
+class UserSuccessStoriesState extends State<UserSuccessStories> {
   final List<Map<String, String>> successStories = [
     {
       "name": "John Doe",

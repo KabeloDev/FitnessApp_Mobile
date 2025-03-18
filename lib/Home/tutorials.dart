@@ -52,7 +52,7 @@ class VideoTutorialsOfTheWeek extends StatelessWidget {
                   context: context,
                   builder: (BuildContext context) {
                     return Dialog(
-                      backgroundColor: Colors.black.withOpacity(0.9),
+                      backgroundColor: Colors.black.withAlpha(200),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12),
                       ),
@@ -105,10 +105,10 @@ class VideoPlayerModal extends StatefulWidget {
   const VideoPlayerModal({super.key, required this.videoId});
 
   @override
-  _VideoPlayerModalState createState() => _VideoPlayerModalState();
+  VideoPlayerModalState createState() => VideoPlayerModalState();
 }
 
-class _VideoPlayerModalState extends State<VideoPlayerModal> {
+class VideoPlayerModalState extends State<VideoPlayerModal> {
   late YoutubePlayerController _controller;
 
   @override

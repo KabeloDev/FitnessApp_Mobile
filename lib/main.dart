@@ -1,4 +1,4 @@
-import 'package:fitness_app/home.dart';
+import 'package:fitness_app/Home/home.dart';
 import 'package:flutter/material.dart';
 
 void main() {

@@ -1,7 +1,7 @@
 import 'dart:developer';
-import 'package:fitness_app/joinclub.dart';
-import 'package:fitness_app/stories.dart';
-import 'package:fitness_app/tutorials.dart';
+import 'package:fitness_app/Home/joinclub.dart';
+import 'package:fitness_app/Home/stories.dart';
+import 'package:fitness_app/Home/tutorials.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
