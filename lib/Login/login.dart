@@ -18,14 +18,12 @@ class LoginPageState extends State<LoginPage> {
 
   // Function to make API call
   Future<void> loginUser() async {
-    final String apiUrl = 'https://10.0.2.2:7182/api/users/login'; // Correct URL with '/api/login' for Android Emulator
+    final String apiUrl = 'https://10.0.2.2:7182/api/users/login';
 
-    // Create a custom HttpClient to bypass SSL certificate verification
     final HttpClient client = HttpClient()
       ..badCertificateCallback =
-          (X509Certificate cert, String host, int port) => true; // Bypass SSL
+          (X509Certificate cert, String host, int port) => true;
 
-    // Create an IOClient using the custom HttpClient
     final IOClient ioClient = IOClient(client);
 
     try {
@@ -39,11 +37,9 @@ class LoginPageState extends State<LoginPage> {
       );
 
       if (response.statusCode == 200) {
-        // Assuming the response contains the JWT token
         final Map<String, dynamic> data = json.decode(response.body);
-        final String jwtToken = data['token'];  // JWT token returned by backend
+        final String jwtToken = data['token'];
 
-        // Store the JWT token locally using shared_preferences
         SharedPreferences prefs = await SharedPreferences.getInstance();
         await prefs.setString('jwt_token', jwtToken);
 
@@ -56,18 +52,15 @@ class LoginPageState extends State<LoginPage> {
           MaterialPageRoute(builder: (context) => Home()),
         );
       } else {
-        // Registration failed
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Sign in Failed!')),
         );
       }
     } catch (e) {
-      // Handle network or other errors
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Error: $e')),
       );
     } finally {
-      // Close the IOClient to free resources
       ioClient.close();
     }
   }
@@ -75,29 +68,88 @@ class LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Sign in')),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            TextField(
-              controller: _usernameController,
-              decoration: InputDecoration(labelText: 'Username'),
+      appBar: AppBar(),
+      body: Stack(
+        fit: StackFit.expand,
+        children: [
+          // Background Image
+          Positioned.fill(
+            child: ShaderMask(
+              shaderCallback: (Rect bounds) {
+                return LinearGradient(
+                  begin: Alignment.center,
+                  end: Alignment.topCenter,
+                  colors: [Colors.white, Colors.white.withAlpha(0)],
+                ).createShader(bounds);
+              },
+              blendMode: BlendMode.dstIn,
+              child: Image.network(
+                'https://wallpapercave.com/wp/wp11665822.jpg',
+                fit: BoxFit.cover,
+              ),
             ),
-            TextField(
-              controller: _passwordController,
-              decoration: InputDecoration(labelText: 'Password'),
-              obscureText: true,
+          ),
+
+          // Login Form
+          Center(
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Card(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(16),
+                ),
+                elevation: 10,
+                color: Colors.white.withAlpha(200), // Slight transparency
+                child: Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Sign In',
+                        style: TextStyle(
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black87,
+                        ),
+                      ),
+                      SizedBox(height: 20),
+                      TextField(
+                        controller: _usernameController,
+                        decoration: InputDecoration(
+                          labelText: 'Username',
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(20)
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 10),
+                      TextField(
+                        controller: _passwordController,
+                        decoration: InputDecoration(
+                          labelText: 'Password',
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(20)
+                          ),
+                        ),
+                        //obscureText: true,
+                      ),
+                      SizedBox(height: 30),
+                      SizedBox(
+                        width: double.infinity,
+                        child: ElevatedButton(
+                          onPressed: loginUser,
+                          child: Text('Sign in'),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
             ),
-            SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: loginUser,
-              child: Text('Login'),
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
