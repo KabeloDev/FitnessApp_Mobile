@@ -2,6 +2,8 @@ import 'dart:developer';
 import 'package:fitness_app/Home/joinclub.dart';
 import 'package:fitness_app/Home/stories.dart';
 import 'package:fitness_app/Home/tutorials.dart';
+import 'package:fitness_app/Login/login.dart';
+import 'package:fitness_app/Register/register.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -25,7 +27,11 @@ class Home extends StatelessWidget {
           IconButton(
             icon: const Icon(Icons.login_rounded, color: Colors.black),
             onPressed: () {
-              log('Sign in clicked');
+              log('login button clicked');
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => LoginPage()),
+              );
             },
           ),
         ],
@@ -83,7 +89,7 @@ class Home extends StatelessWidget {
                       title: const Text('User Profile'),
                       onTap: () {},
                     ),
-                    const SizedBox(height: 30,),
+                    const SizedBox(height: 30),
                     ListTile(
                       leading: IconButton(
                         icon: const Icon(Icons.photo_library_rounded),
@@ -94,7 +100,7 @@ class Home extends StatelessWidget {
                       title: const Text('Exercise Library'),
                       onTap: () {},
                     ),
-                    const SizedBox(height: 30,),
+                    const SizedBox(height: 30),
                     ListTile(
                       leading: IconButton(
                         icon: const Icon(Icons.calendar_month),
@@ -105,7 +111,7 @@ class Home extends StatelessWidget {
                       title: const Text('Workout Planner'),
                       onTap: () {},
                     ),
-                    const SizedBox(height: 30,),
+                    const SizedBox(height: 30),
                     ListTile(
                       leading: IconButton(
                         icon: const Icon(Icons.dashboard),
@@ -228,6 +234,12 @@ class Home extends StatelessWidget {
                       child: ElevatedButton(
                         onPressed: () {
                           log('Start your journey button clicked');
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => RegisterPage(),
+                            ),
+                          );
                         },
                         style: ElevatedButton.styleFrom(
                           padding: const EdgeInsets.symmetric(
