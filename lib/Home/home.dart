@@ -3,6 +3,7 @@ import 'package:fitness_app/Dashboard/dashboard.dart';
 import 'package:fitness_app/Home/joinclub.dart';
 import 'package:fitness_app/Home/stories.dart';
 import 'package:fitness_app/Home/tutorials.dart';
+import 'package:fitness_app/Library/library.dart';
 import 'package:fitness_app/Login/login.dart';
 import 'package:fitness_app/Profile/profile.dart';
 import 'package:fitness_app/Register/register.dart';
@@ -125,7 +126,14 @@ class Home extends StatelessWidget {
                         },
                       ),
                       title: const Text('Exercise Library'),
-                      onTap: () {},
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ExerciseLibrary(),
+                          ),
+                        );
+                      },
                     ),
                     const SizedBox(height: 30),
                     ListTile(
