@@ -285,10 +285,10 @@ class CalendarPageState extends State<CalendarPage> {
                 ).createShader(bounds);
               },
               blendMode: BlendMode.dstIn,
-              // child: Image.network(
-              //   'https://img.freepik.com/premium-photo/strong-athletic-woman-sprinter-running-black-background_1235831-49749.jpg',
-              //   fit: BoxFit.cover,
-              // ),
+              child: Image.network(
+                'https://img.freepik.com/premium-photo/workout-concept-with-kettle-bells-dumbbells_493806-8995.jpg',
+                fit: BoxFit.cover,
+              ),
             ),
           ),
 
