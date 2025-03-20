@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:fitness_app/Planner/calendar.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
@@ -422,7 +423,12 @@ class _PlannerPageState extends State<PlannerPage> {
         actions: [
           IconButton(
             icon: Icon(Icons.calendar_month),
-            onPressed: () => showWorkoutDialog(),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => CalendarPage()),
+              );
+            },
           ),
           IconButton(
             icon: Icon(Icons.add),
