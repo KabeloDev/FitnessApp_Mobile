@@ -5,6 +5,7 @@ import 'package:fitness_app/Home/stories.dart';
 import 'package:fitness_app/Home/tutorials.dart';
 import 'package:fitness_app/Library/library.dart';
 import 'package:fitness_app/Login/login.dart';
+import 'package:fitness_app/Planner/planner.dart';
 import 'package:fitness_app/Profile/profile.dart';
 import 'package:fitness_app/Register/register.dart';
 import 'package:flutter/material.dart';
@@ -144,7 +145,14 @@ class Home extends StatelessWidget {
                         },
                       ),
                       title: const Text('Workout Planner'),
-                      onTap: () {},
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => PlannerPage(),
+                          ),
+                        );
+                      },
                     ),
                     const SizedBox(height: 30),
                     ListTile(
