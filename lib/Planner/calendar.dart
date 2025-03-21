@@ -195,7 +195,7 @@ class CalendarPageState extends State<CalendarPage> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text(plannerId == null ? 'Add Planner' : 'Edit Planner'),
+          title: Text(plannerId == null ? 'Add Plan' : 'Edit Plan'),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [

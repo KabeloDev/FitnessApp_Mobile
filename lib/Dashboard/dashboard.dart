@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:fl_chart/fl_chart.dart';
 import 'package:http/io_client.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -18,56 +19,9 @@ class _DashboardPageState extends State<DashboardPage> {
   String errorMessage = '';
   String? userId;
 
-  // Function to fetch user data
-  Future<void> getUserData() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? jwtToken = prefs.getString('jwt_token');
-    
-    if (jwtToken != null) {
-      // Decode the JWT token
-      Map<String, dynamic> decodedToken = JwtDecoder.decode(jwtToken);
-
-      // Extract the 'nameidentifier' claim (which represents the user ID)
-      userId = decodedToken['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier'];
-
-      final String apiUrl = 'https://10.0.2.2:7182/api/Users/GetUserById/$userId'; // Use the decoded user ID
-
-      // Create a custom HttpClient to bypass SSL certificate verification
-      final HttpClient client = HttpClient()
-        ..badCertificateCallback =
-            (X509Certificate cert, String host, int port) => true; // Bypass SSL
-
-      // Create an IOClient using the custom HttpClient
-      final IOClient ioClient = IOClient(client);
-
-      try {
-        final response = await ioClient.get(
-          Uri.parse(apiUrl),
-        );
-
-        if (response.statusCode == 200) {
-          // Parse response body
-          final Map<String, dynamic> data = json.decode(response.body);
-          setState(() {
-            username = data['username'];  // Assuming the response has a 'username' field
-            isLoading = false;
-          });
-        } else {
-          setState(() {
-            errorMessage = 'Failed to load user data.';
-            isLoading = false;
-          });
-        }
-      } catch (e) {
-        setState(() {
-          errorMessage = 'Error: $e';
-          isLoading = false;
-        });
-      } finally {
-        ioClient.close();
-      }
-    }
-  }
+  int inProgressCount = 0;
+  int incompleteCount = 0;
+  int completeCount = 0;
 
   @override
   void initState() {
@@ -75,29 +29,197 @@ class _DashboardPageState extends State<DashboardPage> {
     getUserData();
   }
 
+  Future<void> getUserData() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? jwtToken = prefs.getString('jwt_token');
+
+    if (jwtToken != null) {
+      Map<String, dynamic> decodedToken = JwtDecoder.decode(jwtToken);
+      userId = decodedToken['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier'];
+
+      if (userId != null) {
+        await fetchUsername();
+        await fetchWorkouts();
+      }
+    }
+  }
+
+  Future<void> fetchUsername() async {
+    final String apiUrl = 'https://10.0.2.2:7182/api/Users/GetUserById/$userId';
+
+    final HttpClient client = HttpClient()
+      ..badCertificateCallback = (X509Certificate cert, String host, int port) => true;
+
+    final IOClient ioClient = IOClient(client);
+
+    try {
+      final response = await ioClient.get(Uri.parse(apiUrl));
+
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> data = json.decode(response.body);
+        setState(() {
+          username = data['username'];
+        });
+      } else {
+        setState(() {
+          errorMessage = 'Failed to load username.';
+        });
+      }
+    } catch (e) {
+      setState(() {
+        errorMessage = 'Error fetching username: $e';
+      });
+    } finally {
+      ioClient.close();
+    }
+  }
+
+  Future<void> fetchWorkouts() async {
+    final String apiUrl = 'https://10.0.2.2:7182/api/Workouts/GetWorkouts/$userId';
+
+    final HttpClient client = HttpClient()
+      ..badCertificateCallback = (X509Certificate cert, String host, int port) => true;
+
+    final IOClient ioClient = IOClient(client);
+
+    try {
+      final response = await ioClient.get(Uri.parse(apiUrl));
+
+      if (response.statusCode == 200) {
+        List<dynamic> workouts = json.decode(response.body);
+
+        setState(() {
+          inProgressCount = workouts.where((w) => w['status'] == 'In Progress').length;
+          incompleteCount = workouts.where((w) => w['status'] == 'Incomplete').length;
+          completeCount = workouts.where((w) => w['status'] == 'Complete').length;
+          isLoading = false;
+        });
+      } else {
+        setState(() {
+          errorMessage = 'Failed to load workout data.';
+          isLoading = false;
+        });
+      }
+    } catch (e) {
+      setState(() {
+        errorMessage = 'Error fetching workouts: $e';
+        isLoading = false;
+      });
+    } finally {
+      ioClient.close();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Dashboard'),
-      ),
+      appBar: AppBar(title: const Text('Dashboard')),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Center(
           child: isLoading
-              ? CircularProgressIndicator() // Show loading spinner while fetching data
+              ? const CircularProgressIndicator()
               : errorMessage.isNotEmpty
-                  ? Text(errorMessage) // Show error if there's an issue
+                  ? Text(errorMessage)
                   : Column(
                       mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Text(
-                          'Welcome, $username!', // Display the username
-                          style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                          'Welcome, ${username ?? "User"}!',
+                          style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                         ),
+                        const SizedBox(height: 20),
+                        workoutBarChart(),
                       ],
                     ),
+        ),
+      ),
+    );
+  }
+
+  Widget workoutBarChart() {
+    return SizedBox(
+      height: 350,
+      child: BarChart(
+        BarChartData(
+          alignment: BarChartAlignment.spaceAround,
+          maxY: ([
+                inProgressCount.toDouble(),
+                incompleteCount.toDouble(),
+                completeCount.toDouble()
+              ].reduce((a, b) => a > b ? a : b) + 2), // Ensure bars are visible
+          barTouchData: BarTouchData(enabled: true),
+          gridData: FlGridData(show: false),
+          borderData: FlBorderData(show: false),
+          titlesData: FlTitlesData(
+            leftTitles: AxisTitles(
+              sideTitles: SideTitles(
+                showTitles: true,
+                reservedSize: 40,
+                getTitlesWidget: (double value, TitleMeta meta) {
+                  return Text(value.toInt().toString(), style: const TextStyle(fontSize: 12));
+                },
+              ),
+            ),
+            bottomTitles: AxisTitles(
+              sideTitles: SideTitles(
+                showTitles: true,
+                getTitlesWidget: (double value, TitleMeta meta) {
+                  switch (value.toInt()) {
+                    case 0:
+                      return const Text('In Progress', style: TextStyle(fontSize: 12));
+                    case 1:
+                      return const Text('Incomplete', style: TextStyle(fontSize: 12));
+                    case 2:
+                      return const Text('Complete', style: TextStyle(fontSize: 12));
+                    default:
+                      return const Text('');
+                  }
+                },
+              ),
+            ),
+          ),
+          barGroups: [
+            BarChartGroupData(x: 0, barRods: [
+              BarChartRodData(
+                toY: inProgressCount.toDouble(),
+                color: Colors.blue,
+                width: 30,
+                borderRadius: BorderRadius.circular(8),
+                gradient: LinearGradient(
+                  colors: [Colors.blue.shade300, Colors.blue.shade900],
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                ),
+              ),
+            ]),
+            BarChartGroupData(x: 1, barRods: [
+              BarChartRodData(
+                toY: incompleteCount.toDouble(),
+                color: Colors.red,
+                width: 30,
+                borderRadius: BorderRadius.circular(8),
+                gradient: LinearGradient(
+                  colors: [Colors.red.shade300, Colors.red.shade900],
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                ),
+              ),
+            ]),
+            BarChartGroupData(x: 2, barRods: [
+              BarChartRodData(
+                toY: completeCount.toDouble(),
+                color: Colors.green,
+                width: 30,
+                borderRadius: BorderRadius.circular(8),
+                gradient: LinearGradient(
+                  colors: [Colors.green.shade300, Colors.green.shade900],
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                ),
+              ),
+            ]),
+          ],
         ),
       ),
     );

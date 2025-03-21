@@ -43,6 +43,7 @@ dependencies:
   shared_preferences: ^2.5.2
   jwt_decoder: ^2.0.1
   table_calendar: ^3.2.0
+  fl_chart: ^0.70.2
 
 dev_dependencies:
   flutter_test:
