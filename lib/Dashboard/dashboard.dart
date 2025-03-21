@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:fitness_app/Dashboard/line.dart';
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:http/io_client.dart';
@@ -35,7 +36,8 @@ class _DashboardPageState extends State<DashboardPage> {
 
     if (jwtToken != null) {
       Map<String, dynamic> decodedToken = JwtDecoder.decode(jwtToken);
-      userId = decodedToken['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier'];
+      userId =
+          decodedToken['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier'];
 
       if (userId != null) {
         await fetchUsername();
@@ -47,8 +49,10 @@ class _DashboardPageState extends State<DashboardPage> {
   Future<void> fetchUsername() async {
     final String apiUrl = 'https://10.0.2.2:7182/api/Users/GetUserById/$userId';
 
-    final HttpClient client = HttpClient()
-      ..badCertificateCallback = (X509Certificate cert, String host, int port) => true;
+    final HttpClient client =
+        HttpClient()
+          ..badCertificateCallback =
+              (X509Certificate cert, String host, int port) => true;
 
     final IOClient ioClient = IOClient(client);
 
@@ -75,10 +79,13 @@ class _DashboardPageState extends State<DashboardPage> {
   }
 
   Future<void> fetchWorkouts() async {
-    final String apiUrl = 'https://10.0.2.2:7182/api/Workouts/GetWorkouts/$userId';
+    final String apiUrl =
+        'https://10.0.2.2:7182/api/Workouts/GetWorkouts/$userId';
 
-    final HttpClient client = HttpClient()
-      ..badCertificateCallback = (X509Certificate cert, String host, int port) => true;
+    final HttpClient client =
+        HttpClient()
+          ..badCertificateCallback =
+              (X509Certificate cert, String host, int port) => true;
 
     final IOClient ioClient = IOClient(client);
 
@@ -89,9 +96,12 @@ class _DashboardPageState extends State<DashboardPage> {
         List<dynamic> workouts = json.decode(response.body);
 
         setState(() {
-          inProgressCount = workouts.where((w) => w['status'] == 'In Progress').length;
-          incompleteCount = workouts.where((w) => w['status'] == 'Incomplete').length;
-          completeCount = workouts.where((w) => w['status'] == 'Complete').length;
+          inProgressCount =
+              workouts.where((w) => w['status'] == 'In Progress').length;
+          incompleteCount =
+              workouts.where((w) => w['status'] == 'Incomplete').length;
+          completeCount =
+              workouts.where((w) => w['status'] == 'Complete').length;
           isLoading = false;
         });
       } else {
@@ -117,21 +127,51 @@ class _DashboardPageState extends State<DashboardPage> {
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Center(
-          child: isLoading
-              ? const CircularProgressIndicator()
-              : errorMessage.isNotEmpty
+          child:
+              isLoading
+                  ? const CircularProgressIndicator()
+                  : errorMessage.isNotEmpty
                   ? Text(errorMessage)
                   : Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          'Welcome, ${username ?? "User"}!',
-                          style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        'Welcome, ${username ?? "User"}!',
+                        style: const TextStyle(
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
                         ),
-                        const SizedBox(height: 20),
-                        workoutBarChart(),
-                      ],
-                    ),
+                      ),
+                      const SizedBox(height: 50),
+                      const Text('Workout Statitics'),
+                      const SizedBox(height: 10),
+                      workoutBarChart(),
+                      const SizedBox(height: 50),
+                      ElevatedButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => LineChartPage(),
+                            ),
+                          );
+                        },
+                        child: const Text('Exercises Count'),
+                      ),
+                      const SizedBox(height: 50),
+                      ElevatedButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => LineChartPage(),
+                            ),
+                          );
+                        },
+                        child: const Text('Exercises Count'),
+                      ),
+                    ],
+                  ),
         ),
       ),
     );
@@ -143,11 +183,13 @@ class _DashboardPageState extends State<DashboardPage> {
       child: BarChart(
         BarChartData(
           alignment: BarChartAlignment.spaceAround,
-          maxY: ([
-                inProgressCount.toDouble(),
-                incompleteCount.toDouble(),
-                completeCount.toDouble()
-              ].reduce((a, b) => a > b ? a : b) + 2), // Ensure bars are visible
+          maxY:
+              ([
+                    inProgressCount.toDouble(),
+                    incompleteCount.toDouble(),
+                    completeCount.toDouble(),
+                  ].reduce((a, b) => a > b ? a : b) +
+                  2), // Ensure bars are visible
           barTouchData: BarTouchData(enabled: true),
           gridData: FlGridData(show: false),
           borderData: FlBorderData(show: false),
@@ -157,7 +199,10 @@ class _DashboardPageState extends State<DashboardPage> {
                 showTitles: true,
                 reservedSize: 40,
                 getTitlesWidget: (double value, TitleMeta meta) {
-                  return Text(value.toInt().toString(), style: const TextStyle(fontSize: 12));
+                  return Text(
+                    value.toInt().toString(),
+                    style: const TextStyle(fontSize: 12),
+                  );
                 },
               ),
             ),
@@ -167,11 +212,20 @@ class _DashboardPageState extends State<DashboardPage> {
                 getTitlesWidget: (double value, TitleMeta meta) {
                   switch (value.toInt()) {
                     case 0:
-                      return const Text('In Progress', style: TextStyle(fontSize: 12));
+                      return const Text(
+                        'In Progress',
+                        style: TextStyle(fontSize: 12),
+                      );
                     case 1:
-                      return const Text('Incomplete', style: TextStyle(fontSize: 12));
+                      return const Text(
+                        'Incomplete',
+                        style: TextStyle(fontSize: 12),
+                      );
                     case 2:
-                      return const Text('Complete', style: TextStyle(fontSize: 12));
+                      return const Text(
+                        'Complete',
+                        style: TextStyle(fontSize: 12),
+                      );
                     default:
                       return const Text('');
                   }
@@ -180,45 +234,54 @@ class _DashboardPageState extends State<DashboardPage> {
             ),
           ),
           barGroups: [
-            BarChartGroupData(x: 0, barRods: [
-              BarChartRodData(
-                toY: inProgressCount.toDouble(),
-                color: Colors.blue,
-                width: 30,
-                borderRadius: BorderRadius.circular(8),
-                gradient: LinearGradient(
-                  colors: [Colors.blue.shade300, Colors.blue.shade900],
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
+            BarChartGroupData(
+              x: 0,
+              barRods: [
+                BarChartRodData(
+                  toY: inProgressCount.toDouble(),
+                  color: Colors.blue,
+                  width: 30,
+                  borderRadius: BorderRadius.circular(8),
+                  gradient: LinearGradient(
+                    colors: [Colors.blue.shade300, Colors.blue.shade900],
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                  ),
                 ),
-              ),
-            ]),
-            BarChartGroupData(x: 1, barRods: [
-              BarChartRodData(
-                toY: incompleteCount.toDouble(),
-                color: Colors.red,
-                width: 30,
-                borderRadius: BorderRadius.circular(8),
-                gradient: LinearGradient(
-                  colors: [Colors.red.shade300, Colors.red.shade900],
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
+              ],
+            ),
+            BarChartGroupData(
+              x: 1,
+              barRods: [
+                BarChartRodData(
+                  toY: incompleteCount.toDouble(),
+                  color: Colors.red,
+                  width: 30,
+                  borderRadius: BorderRadius.circular(8),
+                  gradient: LinearGradient(
+                    colors: [Colors.red.shade300, Colors.red.shade900],
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                  ),
                 ),
-              ),
-            ]),
-            BarChartGroupData(x: 2, barRods: [
-              BarChartRodData(
-                toY: completeCount.toDouble(),
-                color: Colors.green,
-                width: 30,
-                borderRadius: BorderRadius.circular(8),
-                gradient: LinearGradient(
-                  colors: [Colors.green.shade300, Colors.green.shade900],
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
+              ],
+            ),
+            BarChartGroupData(
+              x: 2,
+              barRods: [
+                BarChartRodData(
+                  toY: completeCount.toDouble(),
+                  color: Colors.green,
+                  width: 30,
+                  borderRadius: BorderRadius.circular(8),
+                  gradient: LinearGradient(
+                    colors: [Colors.green.shade300, Colors.green.shade900],
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                  ),
                 ),
-              ),
-            ]),
+              ],
+            ),
           ],
         ),
       ),
