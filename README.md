@@ -45,10 +45,6 @@ Profile: <br/>
 <img src="https://i.imgur.com/mYgIjAt.png" height="80%" width="80%" />
 <br />
 <br />
-Home page: <br/>
-<img src="https://i.imgur.com/WzDz8ew.png" height="80%" width="80%" />
-<br />
-<br />
 Exercise Library: <br/>
 <img src="https://i.imgur.com/OklJYAd.png" height="80%" width="80%" />
 <br />
@@ -77,42 +73,5 @@ Sign in: <br/>
 <br />
 <br />
 
-Firebase: <br/>
-<img src="https://i.imgur.com/bJHW8w2.png" height="80%" width="80%" />
-<br />
-<br />
-API: <br/>
-<img src="https://i.imgur.com/AgpOSEs.png" height="80%" width="80%" />
-<br />
-<br />
-JSON: <br/>
-<img src="https://i.imgur.com/ZX91Pe8.png" height="80%" width="80%" />
-<br />
-<br />
 
 
-
-
-
-
-
-<<<<<<< HEAD
-# FitnessApp_Mobile
-=======
-# fitness_app
-
-A new Flutter project.
-
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
->>>>>>> b0b28e3 (Initial)
