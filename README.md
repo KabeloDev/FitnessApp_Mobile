@@ -5,6 +5,8 @@
 <h2>Description</h2>
 Fitness tracker mobile app, built with Flutter and connected to an ASP.NET Core 9 Web API backend! It includes:
 
+<br/>
+
 🔹 User Profiles: Secure sign-up, profile management, and authentication. 
 <br/>
 🔹 Exercise Library: Detailed exercises, muscle groups, and tutorials with easy category filtering. 
