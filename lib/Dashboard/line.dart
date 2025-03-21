@@ -103,81 +103,101 @@ class LineChartPageState extends State<LineChartPage> {
         child: isLoading
             ? const CircularProgressIndicator()
             : isAuthenticated
-                ? Column(
+                ? Stack(
                   children: [
-                    const SizedBox(height: 50,),
-                    const Text('Exercise Count'),
-                    const SizedBox(height: 10,),
-                      Container(
-                        height: 400, // Set the height to your desired value
-                        padding: const EdgeInsets.all(16), // Add some padding
-                        child: LineChart(
-                          LineChartData(
-                            gridData: FlGridData(
-                              show: true,
-                              getDrawingHorizontalLine: (value) => FlLine(
-                                color: Colors.grey.withAlpha(100),
-                                strokeWidth: 1,
-                              ),
-                              getDrawingVerticalLine: (value) => FlLine(
-                                color: Colors.grey.withAlpha(100),
-                                strokeWidth: 1,
-                              ),
-                            ),
-                            titlesData: FlTitlesData(
-                              show: true,
-                              bottomTitles: AxisTitles(
-                                sideTitles: SideTitles(
-                                  showTitles: false, // Hide titles on the X-axis
-                                ),
-                              ),
-                              leftTitles: AxisTitles(
-                                sideTitles: SideTitles(
-                                  showTitles: true, // Show titles on the Y-axis
-                                  reservedSize: 32, // Adjust the space
-                                  getTitlesWidget: (value, meta) {
-                                    return Text(
-                                      value.toInt().toString(),
-                                      style: const TextStyle(
-                                        fontSize: 12,
-                                        color: Colors.black,
-                                      ),
-                                    );
-                                  },
-                                  interval: 1, // Show natural numbers only
-                                ),
-                              ),
-                              // Hide the top and right titles
-                              topTitles: AxisTitles(
-                                sideTitles: SideTitles(showTitles: false),
-                              ),
-                              rightTitles: AxisTitles(
-                                sideTitles: SideTitles(showTitles: false),
-                              ),
-                            ),
-                            borderData: FlBorderData(
-                              show: true,
-                              border: Border.all(
-                                color: Colors.black.withAlpha(20),
-                                width: 1,
-                              ),
-                            ),
-                            lineBarsData: [
-                              LineChartBarData(
-                                spots: chartData,
-                                isCurved: false,
-                                belowBarData: BarAreaData(show: false), // Remove the shaded area below the line
-                                barWidth: 3, // Set the width of the line
-                              ),
-                            ],
-                            minY: 0, // Set the minimum Y-axis value
-                            maxY: chartData.isNotEmpty
-                                ? chartData.map((e) => e.y).reduce((a, b) => a > b ? a : b) + 1
-                                : 1, // Adjust the max Y value
+                     Positioned.fill(
+                        child: ShaderMask(
+                          shaderCallback: (Rect bounds) {
+                            return LinearGradient(
+                              begin: Alignment.center,
+                              end: Alignment.topCenter,
+                              colors: [Colors.white, Colors.white.withAlpha(0)],
+                            ).createShader(bounds);
+                          },
+                          blendMode: BlendMode.dstIn,
+                          child: Image.network(
+                            'https://st.depositphotos.com/9527076/55730/i/450/depositphotos_557301200-stock-photo-fitness-or-exercising-at-home.jpg',
+                            fit: BoxFit.cover,
                           ),
                         ),
                       ),
-                    ],
+                    Column(
+                      children: [
+                        const SizedBox(height: 50,),
+                        const Text('Exercise Count', style: TextStyle(fontSize: 20, fontStyle: FontStyle.italic),),
+                        const SizedBox(height: 10,),
+                          Container(
+                            height: 400, // Set the height to your desired value
+                            padding: const EdgeInsets.all(16), // Add some padding
+                            child: LineChart(
+                              LineChartData(
+                                gridData: FlGridData(
+                                  show: true,
+                                  getDrawingHorizontalLine: (value) => FlLine(
+                                    color: Colors.grey.withAlpha(100),
+                                    strokeWidth: 1,
+                                  ),
+                                  getDrawingVerticalLine: (value) => FlLine(
+                                    color: Colors.grey.withAlpha(100),
+                                    strokeWidth: 1,
+                                  ),
+                                ),
+                                titlesData: FlTitlesData(
+                                  show: true,
+                                  bottomTitles: AxisTitles(
+                                    sideTitles: SideTitles(
+                                      showTitles: false, // Hide titles on the X-axis
+                                    ),
+                                  ),
+                                  leftTitles: AxisTitles(
+                                    sideTitles: SideTitles(
+                                      showTitles: true, // Show titles on the Y-axis
+                                      reservedSize: 32, // Adjust the space
+                                      getTitlesWidget: (value, meta) {
+                                        return Text(
+                                          value.toInt().toString(),
+                                          style: const TextStyle(
+                                            fontSize: 12,
+                                            color: Colors.black,
+                                          ),
+                                        );
+                                      },
+                                      interval: 1, // Show natural numbers only
+                                    ),
+                                  ),
+                                  // Hide the top and right titles
+                                  topTitles: AxisTitles(
+                                    sideTitles: SideTitles(showTitles: false),
+                                  ),
+                                  rightTitles: AxisTitles(
+                                    sideTitles: SideTitles(showTitles: false),
+                                  ),
+                                ),
+                                borderData: FlBorderData(
+                                  show: true,
+                                  border: Border.all(
+                                    color: Colors.black.withAlpha(20),
+                                    width: 1,
+                                  ),
+                                ),
+                                lineBarsData: [
+                                  LineChartBarData(
+                                    spots: chartData,
+                                    isCurved: false,
+                                    belowBarData: BarAreaData(show: false), // Remove the shaded area below the line
+                                    barWidth: 3, // Set the width of the line
+                                  ),
+                                ],
+                                minY: 0, // Set the minimum Y-axis value
+                                maxY: chartData.isNotEmpty
+                                    ? chartData.map((e) => e.y).reduce((a, b) => a > b ? a : b) + 1
+                                    : 1, // Adjust the max Y value
+                              ),
+                            ),
+                          ),
+                        ],
+                    ),
+                  ],
                 )
                 : const CircularProgressIndicator(),
       ),

@@ -163,7 +163,7 @@ class _DashboardPageState extends State<DashboardPage> {
                               ),
                             ),
                             const SizedBox(height: 50),
-                            const Text('Workout Statistics'),
+                            const Text('Workout Statistics', style: TextStyle(fontSize: 20, fontStyle: FontStyle.italic),),
                             const SizedBox(height: 10),
                             workoutBarChart(),
                             const SizedBox(height: 50),
