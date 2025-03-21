@@ -125,50 +125,62 @@ class _DashboardPageState extends State<DashboardPage> {
     return Scaffold(
       appBar: AppBar(title: const Text('Dashboard')),
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(0),
         child: Center(
           child:
               isLoading
                   ? const CircularProgressIndicator()
                   : errorMessage.isNotEmpty
                   ? Text(errorMessage)
-                  : Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
+                  : Stack(
                     children: [
-                      Text(
-                        'Welcome, ${username ?? "User"}!',
-                        style: const TextStyle(
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold,
+                      Positioned.fill(
+                        child: ShaderMask(
+                          shaderCallback: (Rect bounds) {
+                            return LinearGradient(
+                              begin: Alignment.center,
+                              end: Alignment.topCenter,
+                              colors: [Colors.white, Colors.white.withAlpha(0)],
+                            ).createShader(bounds);
+                          },
+                          blendMode: BlendMode.dstIn,
+                          child: Image.network(
+                            'https://img.freepik.com/premium-photo/background-with-dumbbells-machines-bodybuilding-3d-illustration-copy-space_522591-6.jpg',
+                            fit: BoxFit.cover,
+                          ),
                         ),
                       ),
-                      const SizedBox(height: 50),
-                      const Text('Workout Statitics'),
-                      const SizedBox(height: 10),
-                      workoutBarChart(),
-                      const SizedBox(height: 50),
-                      ElevatedButton(
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => LineChartPage(),
+                      Padding(
+                        padding: const EdgeInsets.all(15),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              'Welcome, ${username ?? "User"}!',
+                              style: const TextStyle(
+                                fontSize: 24,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
-                          );
-                        },
-                        child: const Text('Exercises Count'),
-                      ),
-                      const SizedBox(height: 50),
-                      ElevatedButton(
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => LineChartPage(),
+                            const SizedBox(height: 50),
+                            const Text('Workout Statistics'),
+                            const SizedBox(height: 10),
+                            workoutBarChart(),
+                            const SizedBox(height: 50),
+                            ElevatedButton(
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => LineChartPage(),
+                                  ),
+                                );
+                              },
+                              child: const Text('Exercises Count'),
                             ),
-                          );
-                        },
-                        child: const Text('Exercises Count'),
+                            const SizedBox(height: 50),
+                          ],
+                        ),
                       ),
                     ],
                   ),
@@ -178,113 +190,120 @@ class _DashboardPageState extends State<DashboardPage> {
   }
 
   Widget workoutBarChart() {
-    return SizedBox(
-      height: 350,
-      child: BarChart(
-        BarChartData(
-          alignment: BarChartAlignment.spaceAround,
-          maxY:
-              ([
-                    inProgressCount.toDouble(),
-                    incompleteCount.toDouble(),
-                    completeCount.toDouble(),
-                  ].reduce((a, b) => a > b ? a : b) +
-                  2), // Ensure bars are visible
-          barTouchData: BarTouchData(enabled: true),
-          gridData: FlGridData(show: false),
-          borderData: FlBorderData(show: false),
-          titlesData: FlTitlesData(
-            leftTitles: AxisTitles(
-              sideTitles: SideTitles(
-                showTitles: true,
-                reservedSize: 40,
-                getTitlesWidget: (double value, TitleMeta meta) {
-                  return Text(
-                    value.toInt().toString(),
-                    style: const TextStyle(fontSize: 12),
-                  );
-                },
-              ),
-            ),
-            bottomTitles: AxisTitles(
-              sideTitles: SideTitles(
-                showTitles: true,
-                getTitlesWidget: (double value, TitleMeta meta) {
-                  switch (value.toInt()) {
-                    case 0:
-                      return const Text(
-                        'In Progress',
-                        style: TextStyle(fontSize: 12),
-                      );
-                    case 1:
-                      return const Text(
-                        'Incomplete',
-                        style: TextStyle(fontSize: 12),
-                      );
-                    case 2:
-                      return const Text(
-                        'Complete',
-                        style: TextStyle(fontSize: 12),
-                      );
-                    default:
-                      return const Text('');
-                  }
-                },
-              ),
+  return SizedBox(
+    height: 350,
+    child: BarChart(
+      BarChartData(
+        alignment: BarChartAlignment.spaceAround,
+        maxY: [
+          inProgressCount.toDouble(),
+          incompleteCount.toDouble(),
+          completeCount.toDouble(),
+        ].reduce((a, b) => a > b ? a : b) + 2, // Ensure bars are visible
+        barTouchData: BarTouchData(enabled: true),
+        gridData: FlGridData(show: false),
+        borderData: FlBorderData(show: false),
+        titlesData: FlTitlesData(
+          leftTitles: AxisTitles(
+            sideTitles: SideTitles(
+              showTitles: true,
+              reservedSize: 40,
+              getTitlesWidget: (double value, TitleMeta meta) {
+                return Text(
+                  value.toInt().toString(),
+                  style: const TextStyle(fontSize: 12),
+                );
+              },
+              interval: 1, // Only show every 1st number, no duplication
             ),
           ),
-          barGroups: [
-            BarChartGroupData(
-              x: 0,
-              barRods: [
-                BarChartRodData(
-                  toY: inProgressCount.toDouble(),
-                  color: Colors.blue,
-                  width: 30,
-                  borderRadius: BorderRadius.circular(8),
-                  gradient: LinearGradient(
-                    colors: [Colors.blue.shade300, Colors.blue.shade900],
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                  ),
-                ),
-              ],
+          bottomTitles: AxisTitles(
+            sideTitles: SideTitles(
+              showTitles: true,
+              getTitlesWidget: (double value, TitleMeta meta) {
+                switch (value.toInt()) {
+                  case 0:
+                    return const Text(
+                      'In Progress',
+                      style: TextStyle(fontSize: 12),
+                    );
+                  case 1:
+                    return const Text(
+                      'Incomplete',
+                      style: TextStyle(fontSize: 12),
+                    );
+                  case 2:
+                    return const Text(
+                      'Complete',
+                      style: TextStyle(fontSize: 12),
+                    );
+                  default:
+                    return const Text('');
+                }
+              },
             ),
-            BarChartGroupData(
-              x: 1,
-              barRods: [
-                BarChartRodData(
-                  toY: incompleteCount.toDouble(),
-                  color: Colors.red,
-                  width: 30,
-                  borderRadius: BorderRadius.circular(8),
-                  gradient: LinearGradient(
-                    colors: [Colors.red.shade300, Colors.red.shade900],
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                  ),
-                ),
-              ],
-            ),
-            BarChartGroupData(
-              x: 2,
-              barRods: [
-                BarChartRodData(
-                  toY: completeCount.toDouble(),
-                  color: Colors.green,
-                  width: 30,
-                  borderRadius: BorderRadius.circular(8),
-                  gradient: LinearGradient(
-                    colors: [Colors.green.shade300, Colors.green.shade900],
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                  ),
-                ),
-              ],
-            ),
-          ],
+          ),
+          // Hide top and right titles
+          topTitles: AxisTitles(
+            sideTitles: SideTitles(showTitles: false),
+          ),
+          rightTitles: AxisTitles(
+            sideTitles: SideTitles(showTitles: false),
+          ),
         ),
+        barGroups: [
+          BarChartGroupData(
+            x: 0,
+            barRods: [
+              BarChartRodData(
+                toY: inProgressCount.toDouble(),
+                color: Colors.blue,
+                width: 30,
+                borderRadius: BorderRadius.circular(8),
+                gradient: LinearGradient(
+                  colors: [Colors.blue.shade300, Colors.blue.shade900],
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                ),
+              ),
+            ],
+          ),
+          BarChartGroupData(
+            x: 1,
+            barRods: [
+              BarChartRodData(
+                toY: incompleteCount.toDouble(),
+                color: Colors.red,
+                width: 30,
+                borderRadius: BorderRadius.circular(8),
+                gradient: LinearGradient(
+                  colors: [Colors.red.shade300, Colors.red.shade900],
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                ),
+              ),
+            ],
+          ),
+          BarChartGroupData(
+            x: 2,
+            barRods: [
+              BarChartRodData(
+                toY: completeCount.toDouble(),
+                color: Colors.green,
+                width: 30,
+                borderRadius: BorderRadius.circular(8),
+                gradient: LinearGradient(
+                  colors: [Colors.green.shade300, Colors.green.shade900],
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                ),
+              ),
+            ],
+          ),
+        ],
       ),
-    );
-  }
+    ),
+  );
+}
+
 }

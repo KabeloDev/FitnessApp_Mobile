@@ -1,6 +1,5 @@
 import 'dart:developer';
 import 'package:fitness_app/Dashboard/dashboard.dart';
-import 'package:fitness_app/Dashboard/line.dart';
 import 'package:fitness_app/Home/joinclub.dart';
 import 'package:fitness_app/Home/stories.dart';
 import 'package:fitness_app/Home/tutorials.dart';
