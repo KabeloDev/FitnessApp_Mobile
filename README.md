@@ -31,47 +31,48 @@ Fitness tracker mobile app, built with Flutter and connected to an ASP.NET Core 
 
 <p align="center">
 Home: <br/>
-<img src="https://i.imgur.com/AAkrFtG.png" height="80%" width="80%" />
+<img src="https://i.imgur.com/NocgakH.png" height="80%" width="80%" />
 <br />
 <br />
-<img src="https://i.imgur.com/YLbdfhX.png" height="80%" width="80%" />
+<img src="https://i.imgur.com/tfy6Vxz.png" height="80%" width="80%" />
 <br />
 <br />
-<img src="https://i.imgur.com/QBCJopJ.png" height="80%" width="80%" />
-<br />
-<br />
-<img src="https://i.imgur.com/NqRWH0N.png" height="80%" width="80%" />
+<img src="https://i.imgur.com/JQ48igB.png" height="80%" width="80%" />
 <br />
 <br />
 Profile: <br/>
-<img src="https://i.imgur.com/mYgIjAt.png" height="80%" width="80%" />
+<img src="https://i.imgur.com/M209XwF.png" height="80%" width="80%" />
 <br />
 <br />
 Exercise Library: <br/>
-<img src="https://i.imgur.com/OklJYAd.png" height="80%" width="80%" />
+<img src="https://i.imgur.com/o9qB6gF.png" height="80%" width="80%" />
 <br />
 <br />
 Workout Planner: <br/>
-<img src="https://i.imgur.com/DSHXLek.png" height="80%" width="80%" />
+<img src="https://i.imgur.com/Pya3jDm.png" height="80%" width="80%" />
+<br />
+<br />
+Custom Exercise: <br/>
+<img src="https://i.imgur.com/GRkzJkY.png" height="80%" width="80%" />
 <br />
 <br />
 Calendar: <br/>
-<img src="https://i.imgur.com/JlRPCEk.png" height="80%" width="80%" />
+<img src="https://i.imgur.com/oM5R9op.png" height="80%" width="80%" />
 <br />
 <br />
 Dashboard: <br/>
-<img src="https://i.imgur.com/7zFRUwg.png" height="80%" width="80%" />
+<img src="https://i.imgur.com/HPMj2d6.png" height="80%" width="80%" />
 <br />
 <br />
-<img src="https://i.imgur.com/WERTg4Q.png" height="80%" width="80%" />
+<img src="https://i.imgur.com/KR8Ld1J.png" height="80%" width="80%" />
 <br />
 <br />
 Register: <br/>
-<img src="https://i.imgur.com/hVsEf0N.png" height="80%" width="80%" />
+<img src="https://i.imgur.com/il5nHLj.png" height="80%" width="80%" />
 <br />
 <br />
 Sign in: <br/>
-<img src="https://i.imgur.com/g3hSHGR.png" height="80%" width="80%" />
+<img src="https://i.imgur.com/MlaDEwW.png" height="80%" width="80%" />
 <br />
 <br />
 
